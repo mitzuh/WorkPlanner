@@ -1,17 +1,31 @@
 import React from 'react';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
+const date = new Date();
+const formatedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+
 export default class CustomCalendar extends React.Component {
+  initialState = {[formatedDate]: {selected: true}}
+
   constructor(props) {
     super(props);
 
-    var date = new Date();
-    var formatedDate = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`
-
-    this.state = {selectedDate: formatedDate}
+    this.state = {_markedDates: this.initialState}
   }
+
+  /**
+   * Format date of selected day and set it to state as selected.
+   */
+  _onDayPress = (day) => {
+    var toDate = new Date(day);
+    toDate = toDate.toISOString().slice(0,10)
+
+    selection = {[toDate]: {selected: true}}
+
+    this.setState({ _markedDates: selection });
+  }
+
   render() {
-    console.log(this.state.selectedDate)
     return (
       <CalendarList
         // Enable horizontal scrolling.
@@ -21,11 +35,9 @@ export default class CustomCalendar extends React.Component {
         // Set first day of the week to Monday
         firstDay={1}
 
-        markedDates={{
-          '2019-11-29': {selected: true, selectedColor: 'blue'},
-        }}
+        markedDates={this.state._markedDates}
 
-        onDayPress={(day) => {console.log('selected day', day)}}
+        onDayPress={(day) => this._onDayPress(day.dateString)}
       />
     )
   }
