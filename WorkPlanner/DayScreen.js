@@ -11,7 +11,7 @@ export default class DayScreen extends React.Component {
     console.log(navigation.getParam('date'))
     return (
       <View style={styles.container}>
-        <Text>{navigation.getParam('date').dateString}</Text>
+        <Text>{navigation.getParam('date')}</Text>
       </View>
     );
   }
