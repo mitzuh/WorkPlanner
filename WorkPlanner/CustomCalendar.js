@@ -21,7 +21,6 @@ export default class CustomCalendar extends React.Component {
     toDate = toDate.toISOString().slice(0,10)
 
     selection = {[toDate]: {selected: true}}
-
     this.setState({ _markedDates: selection });
   }
 
@@ -38,6 +37,7 @@ export default class CustomCalendar extends React.Component {
         markedDates={this.state._markedDates}
 
         onDayPress={(day) => this._onDayPress(day.dateString)}
+        onDayLongPress={(day) => this.props.navigation.navigate('SelectedDateScreen', {date: day})}
       />
     )
   }
