@@ -32,13 +32,15 @@ export default class CustomCalendar extends React.Component {
 
   render() {
     return (
-      <CalendarList
-        // Enable horizontal scrolling.
+      <Calendar
+        // Enable horizontal scrolling
         horizontal={true}
         // Enable paging on horizontal
         pagingEnabled={true}
         // Set first day of the week to Monday
         firstDay={1}
+        // Show week numbers on calendar
+        showWeekNumbers={true}
 
         markedDates={this.state._markedDates}
 
