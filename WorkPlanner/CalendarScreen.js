@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import CustomCalendar from './CustomCalendar';
 
 export default class CalendarScreen extends React.Component {
@@ -10,6 +10,7 @@ export default class CalendarScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar hidden={true}/>
         <CustomCalendar navigation={this.props.navigation}/>
       </View>
     );

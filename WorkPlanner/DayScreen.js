@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 
 export default class DayScreen extends React.Component {
   constructor(props) {
@@ -11,6 +11,7 @@ export default class DayScreen extends React.Component {
     console.log(navigation.getParam('date'))
     return (
       <View style={styles.container}>
+        <StatusBar hidden={true}/>
         <Text>{navigation.getParam('date')}</Text>
       </View>
     );
