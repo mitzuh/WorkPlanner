@@ -19,7 +19,7 @@ export default class NewProjectScreen extends React.Component {
         <TextInput style={styles.textInput} ref={this.myTextInput}/>
 
         <Text>Hours for the project:</Text>
-        <TextInput style={styles.textInput} ref={this.myTextInput}/>
+        <TextInput keyboardType='numeric' style={styles.textInput} ref={this.myTextInput}/>
 
       </View>
     );
