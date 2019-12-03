@@ -55,7 +55,7 @@ export default class ProjectsScreen extends React.Component {
             </TouchableOpacity>
             </View>}
         />
-        <TouchableOpacity style={styles.newProjectButton}>
+        <TouchableOpacity style={styles.newProjectButton} onPress={() => this.props.navigation.navigate('AddProjectScreen')}>
           <Text>NEW PROJECT</Text>
         </TouchableOpacity>
       </View>
