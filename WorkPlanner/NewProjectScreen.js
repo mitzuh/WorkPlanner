@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput } from 'react-native';
 import Project from './Project'
 
 export default class NewProjectScreen extends React.Component {
@@ -14,6 +14,13 @@ export default class NewProjectScreen extends React.Component {
       <View style={styles.container}>
         <StatusBar hidden={true}/>
         <Text>New project for deadline: {date}</Text>
+
+        <Text>Project Name:</Text>
+        <TextInput style={styles.textInput} ref={this.myTextInput}/>
+
+        <Text>Hours for the project:</Text>
+        <TextInput style={styles.textInput} ref={this.myTextInput}/>
+
       </View>
     );
   }
@@ -35,5 +42,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 40,
     margin: 10,
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1
   },
 });
