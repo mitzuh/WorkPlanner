@@ -42,10 +42,3 @@ const styles = StyleSheet.create({
     margin:5,
  },
 });
-
-/*
-<TouchableOpacity
-          onPress={() => this.dateSelected()}>
-          <Text>"SSSSSSSSSSSSS"</Text>
-        </TouchableOpacity>
-        */
