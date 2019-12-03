@@ -55,9 +55,6 @@ export default class ProjectsScreen extends React.Component {
             </TouchableOpacity>
             </View>}
         />
-        <TouchableOpacity style={styles.newProjectButton} onPress={() => this.props.navigation.navigate('AddProjectScreen')}>
-          <Text>NEW PROJECT</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -71,13 +68,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  newProjectButton: {
-    backgroundColor: '#FAF5F4',
-    borderWidth:1,
-    borderColor:'black',
-    alignItems:'center',
-    justifyContent:'center',
-    height:40,
-    margin:10,
- },
 });

@@ -9,11 +9,11 @@ export default class NewProjectScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
-
+    const date = navigation.getParam('date');
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
-        <Text>New project</Text>
+        <StatusBar hidden={true}/>
+        <Text>New project for deadline: {date}</Text>
       </View>
     );
   }
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     padding: 20,
   },
   addButton: {

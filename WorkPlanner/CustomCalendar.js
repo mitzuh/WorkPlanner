@@ -25,7 +25,7 @@ export default class CustomCalendar extends React.Component {
 
     console.log(selection)
     if (JSON.stringify(this.state._markedDates) === (JSON.stringify(selection))) {
-      this.props.navigation.navigate('SelectedDateScreen', {date: day})
+      this.props.navigation.navigate('AddProjectScreen', {date: day})
     }
     this.setState({ _markedDates: selection });
   }

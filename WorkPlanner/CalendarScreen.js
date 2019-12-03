@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
   },
   projectsButton: {
     backgroundColor: '#FAF5F4',
-    borderWidth:1,
-    borderColor:'black',
-    alignItems:'center',
-    justifyContent:'center',
-    height:40,
-    margin:5,
- },
+    borderWidth: 1,
+    borderColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    margin: 5,
+  },
 });
