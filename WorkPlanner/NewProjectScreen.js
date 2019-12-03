@@ -1,10 +1,74 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
 import Project from './Project'
 
 export default class NewProjectScreen extends React.Component {
   constructor(props) {
     super(props);
+
+    this.nameInputRef = React.createRef();
+    this.hourInputRef = React.createRef();
+
+    this.state = {nameInput: '', hourInput: 0}
+
+    this.saveData = this.saveData.bind(this);
+    this.loadData = this.loadData.bind(this);
+  }
+
+  // Storage
+  saveData = async newProject => {
+    console.log(newProject)
+    try {
+      await AsyncStorage.setItem(newProject.name, JSON.stringify(newProject));
+    } catch (error) {
+        console.log("Error saving data!!!")
+      }
+  };
+  loadData = async () => {
+    try {
+      await AsyncStorage.getAllKeys((err, keys) => {
+        AsyncStorage.multiGet(keys, (error, stores) => {
+          stores.map((result, i, store) => {
+            console.log({ [store[i][0]]: store[i][1] });
+            return true;
+          });
+        });
+      });
+    } catch (error) {
+      console.log("Error loading data!!!")
+    }
+  };
+
+  saveProject(date) {
+    if(this.state.hourInput > 0 && this.state.nameInput != '') {
+      const save = this.saveData
+
+      this.nameInputRef.current.clear();
+      this.hourInputRef.current.clear();
+
+      const newProject = new Project(
+        this.state.nameInput,
+        date,
+        this.state.hourInput,
+        '0'
+      );
+
+      save(newProject);
+      this.testLoad();
+    }
+  }
+
+  testLoad() {
+    const load = this.loadData
+    load();
+  }
+
+  onChangeName(name) {
+    this.setState((prevstate) => ({nameInput: name}))
+  }
+
+  onChangeHours(hours) {
+    this.setState((prevstate) => ({hourInput: hours}))
   }
 
   render() {
@@ -16,11 +80,17 @@ export default class NewProjectScreen extends React.Component {
         <Text>New project for deadline: {date}</Text>
 
         <Text>Project Name:</Text>
-        <TextInput style={styles.textInput} ref={this.myTextInput}/>
+        <TextInput style={styles.textInput} ref={this.nameInputRef} onChangeText={textInput => this.onChangeName(textInput)}/>
 
         <Text>Hours for the project:</Text>
-        <TextInput keyboardType='numeric' style={styles.textInput} ref={this.myTextInput}/>
+        <TextInput keyboardType='numeric' ref={this.hourInputRef} style={styles.textInput} onChangeText={textInput => this.onChangeHours(textInput)}/>
 
+        <TouchableOpacity style={styles.addButton} onPress={() => this.saveProject(date)}>
+          <Text>Add Project</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.addButton} onPress={() => this.testLoad()}>
+          <Text>Load projects</Text>
+        </TouchableOpacity>
       </View>
     );
   }
