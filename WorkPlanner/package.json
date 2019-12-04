@@ -8,9 +8,11 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "braces": "^2.3.1",
     "expo": "^35.0.0",
     "hoist-non-react-statics": "*",
     "lodash": "^4.0.0",
+    "mem": "4.0.0",
     "prop-types": "^15.5.10",
     "react": "16.8.3",
     "react-dom": "16.8.3",
