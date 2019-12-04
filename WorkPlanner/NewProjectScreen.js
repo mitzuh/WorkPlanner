@@ -9,7 +9,7 @@ export default class NewProjectScreen extends React.Component {
     this.nameInputRef = React.createRef();
     this.hourInputRef = React.createRef();
 
-    this.state = {nameInput: '', hourInput: 0}
+    this.state = { nameInput: '', hourInput: 0 }
 
     this.saveData = this.saveData.bind(this);
     this.loadData = this.loadData.bind(this);
@@ -17,30 +17,29 @@ export default class NewProjectScreen extends React.Component {
 
   // Storage
   saveData = async newProject => {
-    console.log(newProject)
+    projectObject = JSON.parse(newProject);
     try {
-      await AsyncStorage.setItem(newProject.name, JSON.stringify(newProject));
+      await AsyncStorage.setItem(projectObject.projectName, newProject);
     } catch (error) {
-        console.log("Error saving data!!!")
-      }
+      console.log("Error saving data!!!")
+    }
   };
   loadData = async () => {
     try {
-      await AsyncStorage.getAllKeys((err, keys) => {
-        AsyncStorage.multiGet(keys, (error, stores) => {
-          stores.map((result, i, store) => {
-            console.log({ [store[i][0]]: store[i][1] });
-            return true;
+      AsyncStorage.getAllKeys()
+        .then((ks) => {
+          ks.forEach((k) => {
+            AsyncStorage.getItem(k)
+              .then((v) => console.log(v));
           });
         });
-      });
     } catch (error) {
       console.log("Error loading data!!!")
     }
   };
 
   saveProject(date) {
-    if(this.state.hourInput > 0 && this.state.nameInput != '') {
+    if (this.state.hourInput > 0 && this.state.nameInput != '') {
       const save = this.saveData
 
       this.nameInputRef.current.clear();
@@ -53,8 +52,7 @@ export default class NewProjectScreen extends React.Component {
         '0'
       );
 
-      save(newProject);
-      this.testLoad();
+      save(JSON.stringify(newProject));
     }
   }
 
@@ -64,11 +62,11 @@ export default class NewProjectScreen extends React.Component {
   }
 
   onChangeName(name) {
-    this.setState((prevstate) => ({nameInput: name}))
+    this.setState((prevstate) => ({ nameInput: name }))
   }
 
   onChangeHours(hours) {
-    this.setState((prevstate) => ({hourInput: hours}))
+    this.setState((prevstate) => ({ hourInput: hours }))
   }
 
   render() {
@@ -76,14 +74,14 @@ export default class NewProjectScreen extends React.Component {
     const date = navigation.getParam('date');
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true}/>
+        <StatusBar hidden={true} />
         <Text>New project for deadline: {date}</Text>
 
         <Text>Project Name:</Text>
-        <TextInput style={styles.textInput} ref={this.nameInputRef} onChangeText={textInput => this.onChangeName(textInput)}/>
+        <TextInput style={styles.textInput} ref={this.nameInputRef} onChangeText={textInput => this.onChangeName(textInput)} />
 
         <Text>Hours for the project:</Text>
-        <TextInput keyboardType='numeric' ref={this.hourInputRef} style={styles.textInput} onChangeText={textInput => this.onChangeHours(textInput)}/>
+        <TextInput keyboardType='numeric' ref={this.hourInputRef} style={styles.textInput} onChangeText={textInput => this.onChangeHours(textInput)} />
 
         <TouchableOpacity style={styles.addButton} onPress={() => this.saveProject(date)}>
           <Text>Add Project</Text>
