@@ -15,6 +15,12 @@ export default class NewProjectScreen extends React.Component {
     this.loadData = this.loadData.bind(this);
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "New Project"
+    };
+  };
+
   // Storage
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);

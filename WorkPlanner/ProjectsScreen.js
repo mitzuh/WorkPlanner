@@ -12,6 +12,12 @@ export default class ProjectsScreen extends React.Component {
     this.state = { data: [] }
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Projects"
+    };
+  };
+
   componentDidMount() {
     const load = this.loadData
     load();
@@ -45,6 +51,7 @@ export default class ProjectsScreen extends React.Component {
 
   onClick(item) {
     console.log(item);
+    this.props.navigation.navigate('ProjectInfoScreen', {project: item})
   }
 
   render() {
