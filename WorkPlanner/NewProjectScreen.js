@@ -55,7 +55,7 @@ export default class NewProjectScreen extends React.Component {
         this.state.nameInput,
         date,
         this.state.hourInput,
-        '0'
+        0,
       );
 
       save(JSON.stringify(newProject));
