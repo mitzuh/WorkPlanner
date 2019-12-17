@@ -22,7 +22,6 @@ export default class ProjectInfoScreen extends React.Component {
   // Storage
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);
-    console.log(projectObject)
     try {
       await AsyncStorage.mergeItem(projectObject.projectName, newProject);
     } catch (error) {

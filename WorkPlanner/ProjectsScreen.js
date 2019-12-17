@@ -26,7 +26,7 @@ export default class ProjectsScreen extends React.Component {
   componentDidMount() {
     this.subs = [
       this.props.navigation.addListener('didFocus', (payload) => this.componentDidFocus(payload)),
-    ]; 
+    ];
   }
 
   componentWillUnmount() {
@@ -57,8 +57,6 @@ export default class ProjectsScreen extends React.Component {
 
     arr.push(JSON.parse(p))
     this.setState((prevstate) => ({data: arr}))
-    console.log(arr)
-    console.log(this.state.data)
   }
 
   clearData = async () => {
@@ -69,7 +67,6 @@ export default class ProjectsScreen extends React.Component {
   }
 
   onClick(item) {
-    console.log(item);
     this.props.navigation.navigate('ProjectInfoScreen', {project: item})
   }
 
