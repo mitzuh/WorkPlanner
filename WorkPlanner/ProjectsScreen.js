@@ -31,6 +31,7 @@ export default class ProjectsScreen extends React.Component {
 
   componentWillUnmount() {
     this.subs.forEach(sub => sub.remove());
+    this.setState((prevstate) => ({data: []}))
   }
 
   loadData = async () => {
@@ -51,10 +52,6 @@ export default class ProjectsScreen extends React.Component {
     var arr = []
     arr = this.state.data
 
-    if (arr.length = 0) {
-      arr = []
-    }
-
     arr.push(JSON.parse(p))
     this.setState((prevstate) => ({data: arr}))
   }
@@ -67,6 +64,7 @@ export default class ProjectsScreen extends React.Component {
   }
 
   onClick(item) {
+    this.setState((prevstate) => ({data: []}))
     this.props.navigation.navigate('ProjectInfoScreen', {project: item})
   }
 
