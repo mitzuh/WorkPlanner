@@ -2,7 +2,7 @@ import React from 'react';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 const date = new Date();
-const formatedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+const formatedDate = date.toISOString().slice(0,10);
 
 export default class CustomCalendar extends React.Component {
   initialState = {[formatedDate]: {selected: true}}
@@ -11,6 +11,7 @@ export default class CustomCalendar extends React.Component {
     super(props);
 
     this.state = {_markedDates: this.initialState}
+    console.log(this.state._markedDates)
   }
 
   /**
@@ -22,18 +23,24 @@ export default class CustomCalendar extends React.Component {
 
     selection = {[toDate]: {selected: true}}
 
+    console.log(selection)
+    if (JSON.stringify(this.state._markedDates) === (JSON.stringify(selection))) {
+      this.props.navigation.navigate('AddProjectScreen', {date: day})
+    }
     this.setState({ _markedDates: selection });
   }
 
   render() {
     return (
-      <CalendarList
-        // Enable horizontal scrolling.
+      <Calendar
+        // Enable horizontal scrolling
         horizontal={true}
         // Enable paging on horizontal
         pagingEnabled={true}
         // Set first day of the week to Monday
         firstDay={1}
+        // Show week numbers on calendar
+        showWeekNumbers={true}
 
         markedDates={this.state._markedDates}
 

@@ -1,29 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import CustomCalendar from './CustomCalendar';
+import CalendarScreen from './CalendarScreen.js'
+import DayScreen from './DayScreen.js'
+import ProjectsScreen from './ProjectsScreen.js'
+import NewProjectScreen from './NewProjectScreen.js'
+import ProjectInfoScreen from './ProjectInfoScreen.js'
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    StatusBar.setHidden(true);
-  }
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <CustomCalendar/>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const MainNavigator = createStackNavigator({
+  MainCalendarScreen: {
+    screen: CalendarScreen,
+    navigationOptions: {
+      header: null,
+    }
   },
+  SelectedDateScreen: {
+    screen: DayScreen,
+  },
+  ProjectsScreen: {
+    screen: ProjectsScreen,
+  },
+  AddProjectScreen: {
+    screen: NewProjectScreen,
+  },
+  ProjectInfoScreen: {
+    screen: ProjectInfoScreen,
+  }
 });
+
+const App = createAppContainer(MainNavigator);
+
+export default App;
