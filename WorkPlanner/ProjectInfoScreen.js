@@ -9,7 +9,7 @@ export default class ProjectInfoScreen extends React.Component {
     super(props);
 
     this.hourInputRef = React.createRef();
-    this.state = { hourInput: false, hours: 0 }
+    this.state = { hourInput: false, hours: 0, project: this.props.navigation.getParam('project') }
     this.saveData = this.saveData.bind(this);
   }
 
@@ -50,7 +50,6 @@ export default class ProjectInfoScreen extends React.Component {
     const project = this.props.navigation.getParam('project')
 
     newCompletedHours = Number(project.completedHours) + Number(this.state.hours);
-    console.log("kopleted " + newCompletedHours)
     newRemainingHours = project.remainingHours - this.state.hours;
     if (newRemainingHours < 0) {
       newRemainingHours = 0;
@@ -65,28 +64,26 @@ export default class ProjectInfoScreen extends React.Component {
 
     const save = this.saveData
     save(JSON.stringify(updatedProject));
+    this.setState((prevstate) => ({ project: updatedProject }))
   }
 
   render() {
-    const { navigation } = this.props;
-    const project = navigation.getParam('project')
-
     const data = [
       {
         title: 'Project Name',
-        data: [project.projectName],
+        data: [this.state.project.projectName],
       },
       {
         title: 'Deadline',
-        data: [project.deadline],
+        data: [this.state.project.deadline],
       },
       {
         title: 'Remaining Hours',
-        data: [project.remainingHours],
+        data: [this.state.project.remainingHours],
       },
       {
         title: 'Completed Hours',
-        data: [project.completedHours],
+        data: [this.state.project.completedHours],
       }
     ]
 

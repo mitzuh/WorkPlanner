@@ -18,9 +18,19 @@ export default class ProjectsScreen extends React.Component {
     };
   };
 
-  componentDidMount() {
+  componentDidFocus() {
     const load = this.loadData
     load();
+  }
+
+  componentDidMount() {
+    this.subs = [
+      this.props.navigation.addListener('didFocus', (payload) => this.componentDidFocus(payload)),
+    ]; 
+  }
+
+  componentWillUnmount() {
+    this.subs.forEach(sub => sub.remove());
   }
 
   loadData = async () => {
