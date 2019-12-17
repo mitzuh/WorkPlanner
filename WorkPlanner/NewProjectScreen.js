@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage, ToastAndroid } from 'react-native';
 import Project from './Project'
 
 export default class NewProjectScreen extends React.Component {
@@ -26,6 +26,7 @@ export default class NewProjectScreen extends React.Component {
     projectObject = JSON.parse(newProject);
     try {
       await AsyncStorage.setItem(projectObject.projectName, newProject);
+      ToastAndroid.show('Project "' + projectObject.projectName + '" created!', ToastAndroid.SHORT);
     } catch (error) {
       console.log("Error saving data!!!")
     }
