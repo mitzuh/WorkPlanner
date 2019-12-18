@@ -24,7 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "fi.tuni.tamk.tiko.workplanner"
+    },
+    "android": {
+      "package": "fi.tuni.tamk.tiko.workplanner"
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
 import Project from './Project'
 
 export default class ProjectsScreen extends React.Component {
@@ -12,9 +12,26 @@ export default class ProjectsScreen extends React.Component {
     this.state = { data: [] }
   }
 
-  componentDidMount() {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Projects"
+    };
+  };
+
+  componentDidFocus() {
     const load = this.loadData
     load();
+  }
+
+  componentDidMount() {
+    this.subs = [
+      this.props.navigation.addListener('didFocus', (payload) => this.componentDidFocus(payload)),
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subs.forEach(sub => sub.remove());
+    this.setState((prevstate) => ({data: []}))
   }
 
   loadData = async () => {
@@ -32,19 +49,23 @@ export default class ProjectsScreen extends React.Component {
   };
 
   addProjectToList(p) {
+    var arr = []
     arr = this.state.data
+
     arr.push(JSON.parse(p))
     this.setState((prevstate) => ({data: arr}))
-    console.log(this.state.data)
   }
 
   clearData = async () => {
     await AsyncStorage.clear();
     this.setState((prevstate) => ({data: []}))
+
+    ToastAndroid.show('Data Cleared!', ToastAndroid.SHORT);
   }
 
   onClick(item) {
-    console.log(item);
+    this.setState((prevstate) => ({data: []}))
+    this.props.navigation.navigate('ProjectInfoScreen', {project: item})
   }
 
   render() {
@@ -55,19 +76,21 @@ export default class ProjectsScreen extends React.Component {
         <StatusBar hidden={true} />
         <FlatList
           data={this.state.data}
-          keyExtractor={(x, i) => i}
+          extraData={this.state}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) =>
             <View style={styles.container}>
 
-              <TouchableOpacity style={styles.name}
+              <TouchableOpacity
                 onPress={() => this.onClick(item)}>
                 <Text >
                   {`${item.projectName}, ${item.deadline}`}
                 </Text>
               </TouchableOpacity>
+              
             </View>}
         />
-        <TouchableOpacity style={styles.name}
+        <TouchableOpacity style={styles.clearButton}
           onPress={() => this.clearData()}>
           <Text>Clear Data</Text>
         </TouchableOpacity>
@@ -83,5 +106,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     padding: 20,
+  },
+  clearButton: {
+    backgroundColor: '#FAF5F4',
+    borderWidth: 1,
+    borderColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    margin: 5,
   },
 });

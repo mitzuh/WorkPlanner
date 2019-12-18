@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage, ToastAndroid } from 'react-native';
 import Project from './Project'
 
 export default class NewProjectScreen extends React.Component {
@@ -15,11 +15,18 @@ export default class NewProjectScreen extends React.Component {
     this.loadData = this.loadData.bind(this);
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "New Project"
+    };
+  };
+
   // Storage
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);
     try {
       await AsyncStorage.setItem(projectObject.projectName, newProject);
+      ToastAndroid.show('Project "' + projectObject.projectName + '" created!', ToastAndroid.SHORT);
     } catch (error) {
       console.log("Error saving data!!!")
     }
@@ -49,7 +56,7 @@ export default class NewProjectScreen extends React.Component {
         this.state.nameInput,
         date,
         this.state.hourInput,
-        '0'
+        0,
       );
 
       save(JSON.stringify(newProject));
