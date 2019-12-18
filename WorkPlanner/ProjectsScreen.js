@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid, Alert } from 'react-native';
 import Project from './Project'
 
 export default class ProjectsScreen extends React.Component {
@@ -56,6 +56,21 @@ export default class ProjectsScreen extends React.Component {
     this.setState((prevstate) => ({ data: arr }))
   }
 
+  clearButtonPressed = () => {
+    Alert.alert(
+      'Clear all data?',
+      'All data will be erased!',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => this.clearData()},
+      ],
+      {cancelable: true},
+    );
+  }
+
   clearData = async () => {
     await AsyncStorage.clear();
     this.setState((prevstate) => ({ data: [] }))
@@ -92,7 +107,7 @@ export default class ProjectsScreen extends React.Component {
             </View>}
         />
         <TouchableOpacity style={styles.clearButton}
-          onPress={() => this.clearData()}>
+          onPress={() => this.clearButtonPressed()}>
           <Text>Clear Data</Text>
         </TouchableOpacity>
       </View>
