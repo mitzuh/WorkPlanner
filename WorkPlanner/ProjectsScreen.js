@@ -31,7 +31,7 @@ export default class ProjectsScreen extends React.Component {
 
   componentWillUnmount() {
     this.subs.forEach(sub => sub.remove());
-    this.setState((prevstate) => ({data: []}))
+    this.setState((prevstate) => ({ data: [] }))
   }
 
   loadData = async () => {
@@ -53,19 +53,19 @@ export default class ProjectsScreen extends React.Component {
     arr = this.state.data
 
     arr.push(JSON.parse(p))
-    this.setState((prevstate) => ({data: arr}))
+    this.setState((prevstate) => ({ data: arr }))
   }
 
   clearData = async () => {
     await AsyncStorage.clear();
-    this.setState((prevstate) => ({data: []}))
+    this.setState((prevstate) => ({ data: [] }))
 
     ToastAndroid.show('Data Cleared!', ToastAndroid.SHORT);
   }
 
   onClick(item) {
-    this.setState((prevstate) => ({data: []}))
-    this.props.navigation.navigate('ProjectInfoScreen', {project: item})
+    this.setState((prevstate) => ({ data: [] }))
+    this.props.navigation.navigate('ProjectInfoScreen', { project: item })
   }
 
   render() {
@@ -82,12 +82,13 @@ export default class ProjectsScreen extends React.Component {
             <View style={styles.container}>
 
               <TouchableOpacity
+                style={item.remainingHours == 0 ? styles.projectDone : styles.projectInProgress}
                 onPress={() => this.onClick(item)}>
                 <Text >
                   {`${item.projectName}, ${item.deadline}`}
                 </Text>
               </TouchableOpacity>
-              
+
             </View>}
         />
         <TouchableOpacity style={styles.clearButton}
@@ -116,4 +117,10 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 5,
   },
+  projectInProgress: {
+    backgroundColor: '#fff',
+  },
+  projectDone: {
+    backgroundColor: '#00FF00',
+  }
 });
