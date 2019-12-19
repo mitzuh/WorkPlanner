@@ -15,8 +15,10 @@ export default class NewProjectScreen extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
+    date = new Date(navigation.getParam('date'))
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
     return {
-      title: "New Project: " + navigation.getParam('date')
+      title: "New Project: " + dateString
     };
   };
 

@@ -100,6 +100,12 @@ export default class ProjectsScreen extends React.Component {
     return style;
   }
 
+  getFormatedDateString(deadline) {
+    date = new Date(deadline)
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    return dateString;
+  }
+
   render() {
     const { navigation } = this.props;
 
@@ -117,7 +123,7 @@ export default class ProjectsScreen extends React.Component {
                 style={this.getStyle(item)}
                 onPress={() => this.onClick(item)}>
                 <Text >
-                  {`${item.projectName}, ${item.deadline}`}
+                  {`${item.projectName}, ${this.getFormatedDateString(item.deadline)}`}
                 </Text>
               </TouchableOpacity>
 

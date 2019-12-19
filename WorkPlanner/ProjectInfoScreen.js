@@ -94,6 +94,12 @@ export default class ProjectInfoScreen extends React.Component {
     this.setState((prevstate) => ({ project: updatedProject }))
   }
 
+  getFormatedDateString(deadline) {
+    date = new Date(deadline)
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    return dateString;
+  }
+
   render() {
     const data = [
       {
@@ -102,7 +108,7 @@ export default class ProjectInfoScreen extends React.Component {
       },
       {
         title: 'Deadline',
-        data: [this.state.project.deadline],
+        data: [this.getFormatedDateString(this.state.project.deadline)],
       },
       {
         title: 'Remaining Hours',
