@@ -16,7 +16,7 @@ export default class NewProjectScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: "New Project"
+      title: "New Project: " + navigation.getParam('date')
     };
   };
 
@@ -47,6 +47,9 @@ export default class NewProjectScreen extends React.Component {
 
       save(JSON.stringify(newProject));
     }
+    else {
+      ToastAndroid.show('Data missing or incorrect!', ToastAndroid.SHORT);
+    }
   }
 
   onChangeName(name) {
@@ -63,8 +66,6 @@ export default class NewProjectScreen extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar hidden={true} />
-        <Text>New project for deadline: {date}</Text>
-
         <Text>Project Name:</Text>
         <TextInput style={styles.textInput} ref={this.nameInputRef} onChangeText={textInput => this.onChangeName(textInput)} />
 
