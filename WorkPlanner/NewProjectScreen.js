@@ -12,7 +12,6 @@ export default class NewProjectScreen extends React.Component {
     this.state = { nameInput: '', hourInput: 0 }
 
     this.saveData = this.saveData.bind(this);
-    this.loadData = this.loadData.bind(this);
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -29,19 +28,6 @@ export default class NewProjectScreen extends React.Component {
       ToastAndroid.show('Project "' + projectObject.projectName + '" created!', ToastAndroid.SHORT);
     } catch (error) {
       console.log("Error saving data!!!")
-    }
-  };
-  loadData = async () => {
-    try {
-      AsyncStorage.getAllKeys()
-        .then((ks) => {
-          ks.forEach((k) => {
-            AsyncStorage.getItem(k)
-              .then((v) => console.log(v));
-          });
-        });
-    } catch (error) {
-      console.log("Error loading data!!!")
     }
   };
 
@@ -61,11 +47,6 @@ export default class NewProjectScreen extends React.Component {
 
       save(JSON.stringify(newProject));
     }
-  }
-
-  testLoad() {
-    const load = this.loadData
-    load();
   }
 
   onChangeName(name) {
@@ -92,9 +73,6 @@ export default class NewProjectScreen extends React.Component {
 
         <TouchableOpacity style={styles.addButton} onPress={() => this.saveProject(date)}>
           <Text>Add Project</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.addButton} onPress={() => this.testLoad()}>
-          <Text>Load projects</Text>
         </TouchableOpacity>
       </View>
     );
