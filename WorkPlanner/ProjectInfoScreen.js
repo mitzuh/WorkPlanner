@@ -9,13 +9,36 @@ export default class ProjectInfoScreen extends React.Component {
     super(props);
 
     this.hourInputRef = React.createRef();
-    this.state = { hourInput: false, hours: 0, project: this.props.navigation.getParam('project') }
+    this.state = {
+      hourInput: false,
+      hours: 0,
+      project: this.props.navigation.getParam('project'),
+      today: this.props.navigation.getParam('today')
+    }
     this.saveData = this.saveData.bind(this);
   }
 
+  /**
+   * Set the title to project name and
+   * header background color to white, green or red, based on project status.
+   */
   static navigationOptions = ({ navigation }) => {
+    project = navigation.getParam('project')
+    today = navigation.getParam('today')
+    var color = '#fff'
+
+    if (project.remainingHours == 0) {
+      color = '#00FF00';
+    }
+    else if (project.deadline < today) {
+      color = '#FF0000';
+    }
+
     return {
-      title: navigation.getParam('project').projectName
+      title: navigation.getParam('project').projectName,
+      headerStyle: {
+        backgroundColor: color,
+      },
     };
   };
 
@@ -30,7 +53,12 @@ export default class ProjectInfoScreen extends React.Component {
   };
 
   enableHourInput = () => {
-    this.setState((prevstate) => ({ hourInput: true }))
+    if (this.state.project.deadline < this.state.today) {
+      ToastAndroid.show('Project deadline has passed!', ToastAndroid.SHORT);
+    }
+    else {
+      this.setState((prevstate) => ({ hourInput: true }))
+    }
   }
 
   addHours = () => {
@@ -66,6 +94,12 @@ export default class ProjectInfoScreen extends React.Component {
     this.setState((prevstate) => ({ project: updatedProject }))
   }
 
+  getFormatedDateString(deadline) {
+    date = new Date(deadline)
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    return dateString;
+  }
+
   render() {
     const data = [
       {
@@ -74,7 +108,7 @@ export default class ProjectInfoScreen extends React.Component {
       },
       {
         title: 'Deadline',
-        data: [this.state.project.deadline],
+        data: [this.getFormatedDateString(this.state.project.deadline)],
       },
       {
         title: 'Remaining Hours',

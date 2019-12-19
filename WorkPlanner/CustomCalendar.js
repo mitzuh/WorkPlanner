@@ -1,17 +1,17 @@
 import React from 'react';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import { ToastAndroid } from 'react-native';
 
 const date = new Date();
-const formatedDate = date.toISOString().slice(0,10);
+const formatedDate = date.toISOString().slice(0, 10);
 
 export default class CustomCalendar extends React.Component {
-  initialState = {[formatedDate]: {selected: true}}
+  initialState = { [formatedDate]: { selected: true } }
 
   constructor(props) {
     super(props);
 
-    this.state = {_markedDates: this.initialState, today: formatedDate}
+    this.state = { _markedDates: this.initialState, today: formatedDate }
     console.log(this.state.today)
   }
 
@@ -20,13 +20,13 @@ export default class CustomCalendar extends React.Component {
    */
   _onDayPress = (day) => {
     var toDate = new Date(day);
-    toDate = toDate.toISOString().slice(0,10)
+    toDate = toDate.toISOString().slice(0, 10)
 
-    selection = {[toDate]: {selected: true}}
+    selection = { [toDate]: { selected: true } }
 
     if (JSON.stringify(this.state._markedDates) === (JSON.stringify(selection))) {
-      if(this.state.today <= toDate) {
-        this.props.navigation.navigate('AddProjectScreen', {date: day})
+      if (this.state.today <= toDate) {
+        this.props.navigation.navigate('AddProjectScreen', { date: day })
       }
       else {
         ToastAndroid.show('Date already passed!', ToastAndroid.SHORT);
