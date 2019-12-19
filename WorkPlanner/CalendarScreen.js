@@ -2,13 +2,18 @@ import React from 'react';
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity } from 'react-native';
 import CustomCalendar from './CustomCalendar';
 
+const date = new Date();
+const formatedDate = date.toISOString().slice(0,10);
+
 export default class CalendarScreen extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {today: formatedDate}
   }
 
   dateSelected() {
-    this.props.navigation.navigate('ProjectsScreen')
+    this.props.navigation.navigate('ProjectsScreen', {today: this.state.today})
   }
 
   render() {

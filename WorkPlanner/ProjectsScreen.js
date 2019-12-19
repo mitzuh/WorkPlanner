@@ -2,9 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid, Alert } from 'react-native';
 import Project from './Project'
 
-const date = new Date();
-const formatedDate = date.toISOString().slice(0,10);
-
 export default class ProjectsScreen extends React.Component {
 
   constructor(props) {
@@ -12,7 +9,7 @@ export default class ProjectsScreen extends React.Component {
 
     this.loadData = this.loadData.bind(this);
 
-    this.state = { data: [], today: formatedDate }
+    this.state = { data: [], today: this.props.navigation.getParam('today') }
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -83,7 +80,7 @@ export default class ProjectsScreen extends React.Component {
 
   onClick(item) {
     this.setState((prevstate) => ({ data: [] }))
-    this.props.navigation.navigate('ProjectInfoScreen', { project: item })
+    this.props.navigation.navigate('ProjectInfoScreen', { project: item, today: this.state.today })
   }
 
   getStyle(project) {
