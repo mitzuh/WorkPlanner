@@ -52,6 +52,11 @@ export default class ProjectsScreen extends React.Component {
     arr = this.state.data
 
     arr.push(JSON.parse(p))
+
+    arr.sort((a,b) => {
+      return new Date(a.deadline).getTime() - 
+        new Date(b.deadline).getTime()
+    })
     this.setState((prevstate) => ({ data: arr }))
   }
 
