@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid, Alert } from 'react-native';
-import Project from './Project'
 
 export default class ProjectsScreen extends React.Component {
 
