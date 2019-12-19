@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid, Alert } from 'react-native';
 import Project from './Project'
 
+const date = new Date();
+const formatedDate = date.toISOString().slice(0,10);
+
 export default class ProjectsScreen extends React.Component {
 
   constructor(props) {
@@ -9,7 +12,7 @@ export default class ProjectsScreen extends React.Component {
 
     this.loadData = this.loadData.bind(this);
 
-    this.state = { data: [] }
+    this.state = { data: [], today: formatedDate }
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -83,6 +86,19 @@ export default class ProjectsScreen extends React.Component {
     this.props.navigation.navigate('ProjectInfoScreen', { project: item })
   }
 
+  getStyle(project) {
+    var style = styles.projectInProgress;
+
+    if (project.remainingHours == 0) {
+      style = styles.projectDone;
+    }
+    else if (project.deadline < this.state.today) {
+      style = styles.projectFailed;
+    }
+
+    return style;
+  }
+
   render() {
     const { navigation } = this.props;
 
@@ -97,7 +113,7 @@ export default class ProjectsScreen extends React.Component {
             <View style={styles.container}>
 
               <TouchableOpacity
-                style={item.remainingHours == 0 ? styles.projectDone : styles.projectInProgress}
+                style={this.getStyle(item)}
                 onPress={() => this.onClick(item)}>
                 <Text >
                   {`${item.projectName}, ${item.deadline}`}
@@ -137,5 +153,8 @@ const styles = StyleSheet.create({
   },
   projectDone: {
     backgroundColor: '#00FF00',
-  }
+  },
+  projectFailed: {
+    backgroundColor: '#FF0000',
+  },
 });
