@@ -15,6 +15,11 @@ export default class CustomCalendar extends React.Component {
     console.log(this.state.today)
   }
 
+  setDeadline = (day) => {
+    console.log(day)
+    this.props.setDeadline(day)
+  }
+
   /**
    * Format date of selected day and set it to state as selected.
    */
@@ -26,7 +31,11 @@ export default class CustomCalendar extends React.Component {
 
     if (JSON.stringify(this.state._markedDates) === (JSON.stringify(selection))) {
       if (this.state.today <= toDate) {
-        this.props.navigation.navigate('AddProjectScreen', { date: day })
+        this.props.nextStep()
+
+        this.setDeadline(day)
+
+        this.props.navigation.navigate('TextScreen', {text: 'Summary'})
       }
       else {
         ToastAndroid.show('Date already passed!', ToastAndroid.SHORT);

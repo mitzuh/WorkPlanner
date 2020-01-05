@@ -1,7 +1,9 @@
+import HomeScreen from './HomeScreen.js'
 import CalendarScreen from './CalendarScreen.js'
 import ProjectsScreen from './ProjectsScreen.js'
 import NewProjectScreen from './NewProjectScreen.js'
 import ProjectInfoScreen from './ProjectInfoScreen.js'
+import TextScreen from './TextScreen.js'
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -36,6 +38,12 @@ const transitionConfig = () => {
 
 const MainNavigator = createStackNavigator(
   {
+    HomeScreen: {
+      screen: HomeScreen,
+      navigationOptions: {
+        header: null,
+      }
+    },
     MainCalendarScreen: {
       screen: CalendarScreen,
       navigationOptions: {
@@ -50,6 +58,12 @@ const MainNavigator = createStackNavigator(
     },
     ProjectInfoScreen: {
       screen: ProjectInfoScreen,
+    },
+    TextScreen: {
+      screen: TextScreen,
+      navigationOptions: {
+        header: null,
+      }
     }
   },
   {
