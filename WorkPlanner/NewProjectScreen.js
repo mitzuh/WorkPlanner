@@ -31,6 +31,7 @@ export default class NewProjectScreen extends React.Component {
     try {
       await AsyncStorage.setItem(projectObject.projectName, newProject);
       ToastAndroid.show('Project "' + projectObject.projectName + '" created!', ToastAndroid.SHORT);
+      this.props.navigation.navigate('HomeScreen')
     } catch (error) {
       console.log("Error saving data!!!")
     }
