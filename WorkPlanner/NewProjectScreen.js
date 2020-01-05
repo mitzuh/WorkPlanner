@@ -17,7 +17,7 @@ export default class NewProjectScreen extends React.Component {
     date = new Date(navigation.getParam('date'))
     dateString = date.getUTCDate() + '.' + (date.getUTCMonth() + 1) + '.' + date.getUTCFullYear();
     return {
-      title: "New Project: " + dateString
+      title: "New Project"
     };
   };
 
@@ -63,6 +63,12 @@ export default class NewProjectScreen extends React.Component {
     this.setState((prevstate) => ({ deadline: deadline }))
   }
 
+  getFormatedDateString(deadline) {
+    date = new Date(deadline)
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    return dateString;
+  }
+
   /**
    * Goes to next step if input is correct.
    */
@@ -105,7 +111,7 @@ export default class NewProjectScreen extends React.Component {
       return <DeadlinePickerView navigation={this.props.navigation} nextStep={this.nextStep} setDeadline={this.setDeadline} />
     }
     else if (this.state.step == 4) {
-      return <OverviewView name={this.state.nameInput} hours={this.state.hourInput} deadline={this.state.deadline} save={this.saveProject} />
+      return <OverviewView name={this.state.nameInput} hours={this.state.hourInput} deadline={this.getFormatedDateString(this.state.deadline)} save={this.saveProject} />
     }
   }
 }
