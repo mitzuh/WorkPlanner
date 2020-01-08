@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, SafeAreaView, SectionList, TextInput, ToastAndroid, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ProgressChart } from "react-native-chart-kit";
 import Project from './Project'
 
 export default class ProjectInfoScreen extends React.Component {
@@ -97,16 +98,16 @@ export default class ProjectInfoScreen extends React.Component {
     this.setState((prevstate) => ({ project: updatedProject }))
 
     if (updatedProject.remainingHours == 0) {
-      this.props.navigation.setParams({'BackgroundColor':'#00FF00'});
+      this.props.navigation.setParams({ 'BackgroundColor': '#00FF00' });
     }
     else if (updatedProject.deadline < today) {
-      this.props.navigation.setParams({'BackgroundColor':'#FF0000'});
+      this.props.navigation.setParams({ 'BackgroundColor': '#FF0000' });
     }
   }
 
   getFormatedDateString(deadline) {
     date = new Date(deadline)
-    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth() + 1) + '.' + date.getUTCFullYear();
     return dateString;
   }
 
@@ -129,6 +130,13 @@ export default class ProjectInfoScreen extends React.Component {
         data: [this.state.project.completedHours],
       }
     ]
+
+    //TEST
+    percentage = this.state.project.completedHours / this.state.project.remainingHours
+    console.log(percentage)
+    const progress = {
+      data: [percentage]
+    };
 
     return (
       <View style={styles.container}>
@@ -154,6 +162,14 @@ export default class ProjectInfoScreen extends React.Component {
           {this.state.hourInput &&
             <TextInput keyboardType='numeric' ref={this.hourInputRef} style={styles.textInput} onChangeText={textInput => this.onChangeHours(textInput)} />
           }
+          <ProgressChart
+            style={styles.chart}
+            data={progress}
+            width={150}
+            height={150}
+            chartConfig={chartConfig}
+            hideLegend={false}
+          />
         </View>
 
       </View>
@@ -169,6 +185,16 @@ function Item({ title }) {
   );
 }
 
+const chartConfig = {
+  backgroundGradientFrom: "#243E4F",
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: "#243E4F",
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `rgba(100, 210, 255, ${opacity})`,
+  strokeWidth: 1,
+  barPercentage: 0.5
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -176,6 +202,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     padding: 20,
+  },
+  chart: {
+    flex: 1,
+    backgroundColor: '#243E4F',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   bottomView: {
     flexDirection: 'row',
@@ -205,6 +237,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     backgroundColor: '#FFFFFF',
-    borderWidth: 1
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
