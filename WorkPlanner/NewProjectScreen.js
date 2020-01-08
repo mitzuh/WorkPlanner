@@ -156,11 +156,11 @@ const DeadlinePickerView = ({ navigation, nextStep, setDeadline }) => (
 const OverviewView = ({ name, hours, deadline, save }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />
-    <Text style={styles.text}>Project Name: {name}</Text>
+    <Text style={styles.overviewText}>Project Name: {name}</Text>
 
-    <Text style={styles.text}>Deadline: {deadline}</Text>
+    <Text style={styles.overviewText}>Deadline: {deadline}</Text>
 
-    <Text style={styles.text}>Hours: {hours}</Text>
+    <Text style={styles.overviewText}>Hours: {hours}</Text>
 
     <TouchableOpacity style={styles.addButton} onPress={() => save()}>
       <Text style={styles.text}>Add Project</Text>
@@ -210,5 +210,9 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontWeight: 'bold'
+  },
+  overviewText: {
+    color: 'white',
+    fontSize: 24
   }
 });
