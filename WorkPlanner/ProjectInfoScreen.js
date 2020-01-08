@@ -4,6 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ProgressChart } from "react-native-chart-kit";
 import Project from './Project'
 
+/**
+ * Class for viewing the info of the project and possibility to mark hours done for it.
+ */
 export default class ProjectInfoScreen extends React.Component {
 
   constructor(props) {
@@ -43,7 +46,9 @@ export default class ProjectInfoScreen extends React.Component {
     };
   };
 
-  // Storage
+  /**
+   * Saves the updated project to async storage.
+   */
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);
     try {
@@ -53,6 +58,9 @@ export default class ProjectInfoScreen extends React.Component {
     }
   };
 
+  /**
+   * Shows the hour input textfield.
+   */
   enableHourInput = () => {
     if (this.state.project.deadline < this.state.today) {
       ToastAndroid.show('Project deadline has passed!', ToastAndroid.SHORT);
@@ -62,6 +70,9 @@ export default class ProjectInfoScreen extends React.Component {
     }
   }
 
+  /**
+   * Adds hours done to the project.
+   */
   addHours = () => {
     ToastAndroid.show(this.state.hours + ' hours marked to project!', ToastAndroid.SHORT);
 
@@ -132,7 +143,6 @@ export default class ProjectInfoScreen extends React.Component {
       }
     ]
 
-    //TEST
     percentage = this.state.project.completedHours / this.state.project.initialHours
     if (percentage > 1) {
       percentage = 1.0

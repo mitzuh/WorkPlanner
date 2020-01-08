@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage, ToastAndroid } from 'react-native';
-import Project from './Project'
 
+/**
+ * Class for the text screen, which tells the user what must be
+ * inputted or selected in the next section of the project creation.
+ */
 export default class TextScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +12,9 @@ export default class TextScreen extends React.Component {
     this.state = { data: [] }
   }
 
+  /**
+   * Return back to project creation screen after a short while.
+   */
   componentDidMount() {
     setTimeout(() => {
         this.props.navigation.navigate('AddProjectScreen')

@@ -5,6 +5,9 @@ import { ToastAndroid } from 'react-native';
 const date = new Date();
 const formatedDate = date.toISOString().slice(0, 10);
 
+/**
+ * Class for calendar, which is used for picking a deadline for projects.
+ */
 export default class CustomCalendar extends React.Component {
   initialState = { [formatedDate]: { selected: true } }
 
@@ -14,12 +17,16 @@ export default class CustomCalendar extends React.Component {
     this.state = { _markedDates: this.initialState, today: formatedDate }
   }
 
+  /**
+   * Sets deadline to current project in creation.
+   */
   setDeadline = (day) => {
     this.props.setDeadline(day)
   }
 
   /**
-   * Format date of selected day and set it to state as selected.
+   * Format date of selected day and set it to state as selected. Prevents choosing
+   * past dates.
    */
   _onDayPress = (day) => {
     var toDate = new Date(day);

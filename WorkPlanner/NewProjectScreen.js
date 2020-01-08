@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncSt
 import Project from './Project'
 import CustomCalendar from './CustomCalendar';
 
+/**
+ * Class for project creation.
+ */
 export default class NewProjectScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +27,9 @@ export default class NewProjectScreen extends React.Component {
     };
   };
 
-  // Storage
+  /**
+   * Saved new project to async storage with project name as key.
+   */
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);
     try {
@@ -36,6 +41,9 @@ export default class NewProjectScreen extends React.Component {
     }
   };
 
+  /**
+   * Makes new project and calls the saveData function by passing the created project to it.
+   */
   saveProject() {
     const save = this.saveData
 
@@ -62,6 +70,10 @@ export default class NewProjectScreen extends React.Component {
     this.setState((prevstate) => ({ deadline: deadline }))
   }
 
+  /**
+   * Formats the date to dd-mm-yyy
+   * @param {*} deadline deadline for the project.
+   */
   getFormatedDateString(deadline) {
     date = new Date(deadline)
     dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
@@ -115,9 +127,6 @@ export default class NewProjectScreen extends React.Component {
   }
 }
 
-/**
- * View constants.
- */
 const NameInputView = ({ onChangeName, nextStep }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />

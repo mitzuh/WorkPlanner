@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, FlatList, TouchableOpacity, AsyncStorage, ToastAndroid, Alert } from 'react-native';
 
+/**
+ * Class for the project list screen, where every created project is listed.
+ */
 export default class ProjectsScreen extends React.Component {
 
   constructor(props) {
@@ -36,6 +39,9 @@ export default class ProjectsScreen extends React.Component {
     this.setState((prevstate) => ({ data: [] }))
   }
 
+  /**
+   * Loads all data from the async storage.
+   */
   loadData = async () => {
     try {
       AsyncStorage.getAllKeys()
@@ -50,6 +56,10 @@ export default class ProjectsScreen extends React.Component {
     }
   };
 
+  /**
+   * Adds project to list
+   * @param {*} p project to be added to list.
+   */
   addProjectToList(p) {
     var arr = []
     arr = this.state.data
@@ -63,6 +73,9 @@ export default class ProjectsScreen extends React.Component {
     this.setState((prevstate) => ({ data: arr }))
   }
 
+  /**
+   * Displays alert if user really wants to clear all data. Possibility to cancel.
+   */
   clearButtonPressed = () => {
     Alert.alert(
       'Clear all data?',
@@ -78,6 +91,9 @@ export default class ProjectsScreen extends React.Component {
     );
   }
 
+  /**
+   * Clears all data from async storage.
+   */
   clearData = async () => {
     await AsyncStorage.clear();
     this.setState((prevstate) => ({ data: [] }))
@@ -85,6 +101,10 @@ export default class ProjectsScreen extends React.Component {
     ToastAndroid.show('Data Cleared!', ToastAndroid.SHORT);
   }
 
+  /**
+   * Navigates to project info screen of the selected project.
+   * @param {*} item Clicked project, which info is going to be displayed in the upcoming screen.
+   */
   onClick(item) {
     this.setState((prevstate) => ({ data: [] }))
     this.props.navigation.navigate('ProjectInfoScreen', { project: item, today: this.state.today })
