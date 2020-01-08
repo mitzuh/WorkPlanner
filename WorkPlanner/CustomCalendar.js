@@ -35,7 +35,7 @@ export default class CustomCalendar extends React.Component {
 
         this.setDeadline(day)
 
-        this.props.navigation.navigate('TextScreen', {text: 'Summary'})
+        this.props.navigation.navigate('TextScreen', { text: 'Summary' })
       }
       else {
         ToastAndroid.show('Date already passed!', ToastAndroid.SHORT);
@@ -47,6 +47,17 @@ export default class CustomCalendar extends React.Component {
   render() {
     return (
       <Calendar
+        // Set colors for calendar
+        theme={{
+          calendarBackground: '#243E4F',
+          selectedDayBackgroundColor: '#00adf5',
+          selectedDayTextColor: '#ffffff',
+          todayTextColor: 'red',
+          dayTextColor: 'white',
+          textDisabledColor: 'grey',
+          monthTextColor: 'white',
+          arrowColor: '#3684ff'
+        }}
         // Enable horizontal scrolling
         horizontal={true}
         // Enable paging on horizontal

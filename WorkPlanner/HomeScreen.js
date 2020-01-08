@@ -24,11 +24,11 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <TouchableOpacity style={styles.projectsButton}
           onPress={() => this.navigateToNewProject()}>
-          <Text>New Project</Text>
+          <Text style={styles.text}>New Project</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.projectsButton}
           onPress={() => this.navigateToProjects()}>
-          <Text>Projects</Text>
+          <Text style={styles.text}>My Projects</Text>
         </TouchableOpacity>
       </View>
     );
@@ -37,8 +37,8 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.8,
-    backgroundColor: '#fff',
+    flex: 1,
+    backgroundColor: '#243E4F',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -48,7 +48,13 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    height: 70,
+    width: 120,
     margin: 5,
+    borderRadius: 10,
+    paddingHorizontal: 5
   },
+  text: {
+    fontSize: 20,
+  }
 });

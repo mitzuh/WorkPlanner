@@ -13,7 +13,10 @@ export default class ProjectsScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: "Projects"
+      title: "Projects",
+      headerStyle: {
+        backgroundColor: '#3684ff',
+      },
     };
   };
 
@@ -120,9 +123,8 @@ export default class ProjectsScreen extends React.Component {
             <View style={styles.container}>
 
               <TouchableOpacity
-                style={this.getStyle(item)}
                 onPress={() => this.onClick(item)}>
-                <Text >
+                <Text style={this.getStyle(item)}>
                   {`${item.projectName}, ${this.getFormatedDateString(item.deadline)}`}
                 </Text>
               </TouchableOpacity>
@@ -141,27 +143,28 @@ export default class ProjectsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#243E4F',
     alignItems: 'flex-start',
     justifyContent: 'center',
     padding: 20,
   },
   clearButton: {
-    backgroundColor: '#FAF5F4',
+    backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
-    margin: 5,
+    padding: 5,
+    borderRadius: 10,
   },
   projectInProgress: {
-    backgroundColor: '#fff',
+    color: 'white',
   },
   projectDone: {
-    backgroundColor: '#00FF00',
+    color: '#00FF00',
   },
   projectFailed: {
-    backgroundColor: '#FF0000',
+    color: '#FF0000',
   },
 });

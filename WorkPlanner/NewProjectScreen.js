@@ -17,7 +17,10 @@ export default class NewProjectScreen extends React.Component {
     date = new Date(navigation.getParam('date'))
     dateString = date.getUTCDate() + '.' + (date.getUTCMonth() + 1) + '.' + date.getUTCFullYear();
     return {
-      title: "New Project"
+      title: "New Project",
+      headerStyle: {
+        backgroundColor: '#3684ff',
+      },
     };
   };
 
@@ -123,13 +126,13 @@ export default class NewProjectScreen extends React.Component {
 const NameInputView = ({ onChangeName, nextStep }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />
-    <Text>Project Name:</Text>
-    <TextInput style={styles.textInput} onChangeText={textInput => onChangeName(textInput)} />
+    <Text style={styles.text}>Project Name:</Text>
+    <TextInput style={styles.textInput} placeholder='Name your project' onChangeText={textInput => onChangeName(textInput)} />
 
-    <TouchableOpacity style={styles.addButton} onPress={() => {
+    <TouchableOpacity style={styles.button} onPress={() => {
       nextStep()
     }}>
-      <Text>OK</Text>
+      <Text style={styles.text}>OK</Text>
     </TouchableOpacity>
   </View>
 );
@@ -137,13 +140,13 @@ const NameInputView = ({ onChangeName, nextStep }) => (
 const HourInputView = ({ onChangeHours, nextStep }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />
-    <Text>Hours for the project:</Text>
-    <TextInput keyboardType='numeric' style={styles.textInput} onChangeText={textInput => onChangeHours(textInput)} />
+    <Text style={styles.text}>Hours for the project:</Text>
+    <TextInput keyboardType='numeric' style={styles.textInput} placeholder='Amount of hours' onChangeText={textInput => onChangeHours(textInput)} />
 
-    <TouchableOpacity style={styles.addButton} onPress={() => {
+    <TouchableOpacity style={styles.button} onPress={() => {
       nextStep()
     }}>
-      <Text>OK</Text>
+      <Text style={styles.text}>OK</Text>
     </TouchableOpacity>
   </View>
 )
@@ -158,14 +161,14 @@ const DeadlinePickerView = ({ navigation, nextStep, setDeadline }) => (
 const OverviewView = ({ name, hours, deadline, save }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />
-    <Text>Project Name: {name}</Text>
+    <Text style={styles.text}>Project Name: {name}</Text>
 
-    <Text>Deadline: {deadline}</Text>
+    <Text style={styles.text}>Deadline: {deadline}</Text>
 
-    <Text>Hours: {hours}</Text>
+    <Text style={styles.text}>Hours: {hours}</Text>
 
     <TouchableOpacity style={styles.addButton} onPress={() => save()}>
-      <Text>Add Project</Text>
+      <Text style={styles.text}>Add Project</Text>
     </TouchableOpacity>
   </View>
 )
@@ -173,23 +176,44 @@ const OverviewView = ({ name, hours, deadline, save }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#243E4F',
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
   },
-  addButton: {
-    backgroundColor: '#FAF5F4',
+  button: {
+    backgroundColor: '#3684ff',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    height: 50,
+    width: 50,
     margin: 10,
+    borderRadius: 10,
+  },
+  addButton: {
+    backgroundColor: '#3684ff',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: 90,
+    margin: 10,
+    padding: 5,
+    borderRadius: 10,
   },
   textInput: {
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1
+    borderColor: '#000000',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingHorizontal: 5
   },
+  text: {
+    color: 'white',
+    fontWeight: 'bold'
+  }
 });
