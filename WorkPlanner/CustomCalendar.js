@@ -12,11 +12,9 @@ export default class CustomCalendar extends React.Component {
     super(props);
 
     this.state = { _markedDates: this.initialState, today: formatedDate }
-    console.log(this.state.today)
   }
 
   setDeadline = (day) => {
-    console.log(day)
     this.props.setDeadline(day)
   }
 

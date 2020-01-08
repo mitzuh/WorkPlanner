@@ -37,8 +37,6 @@ export default class NewProjectScreen extends React.Component {
   };
 
   saveProject() {
-    console.log(this.state)
-
     const save = this.saveData
 
     const newProject = new Project(
