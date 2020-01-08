@@ -24,10 +24,6 @@ export default class NewProjectScreen extends React.Component {
     };
   };
 
-  componentDidMount() {
-    this.props.navigation.navigate('TextScreen', { text: 'Give a name or description for your new project.' })
-  }
-
   // Storage
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);

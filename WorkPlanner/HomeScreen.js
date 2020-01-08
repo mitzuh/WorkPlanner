@@ -13,6 +13,7 @@ export default class HomeScreen extends React.Component {
 
   navigateToNewProject() {
     this.props.navigation.navigate('AddProjectScreen')
+    this.props.navigation.navigate('TextScreen', { text: 'Give a name or description for your new project.' })
   }
 
   navigateToProjects(){
