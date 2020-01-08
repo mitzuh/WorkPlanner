@@ -44,6 +44,7 @@ export default class NewProjectScreen extends React.Component {
       this.state.deadline,
       this.state.hourInput,
       0,
+      this.state.hourInput
     );
 
     save(JSON.stringify(newProject));

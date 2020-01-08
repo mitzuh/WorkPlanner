@@ -1,9 +1,10 @@
 export default class Project {
-  constructor(projectName,deadline,remainingHours,completedHours) {
+  constructor(projectName,deadline,remainingHours,completedHours,initialHours) {
     this.projectName = projectName;
     this.deadline = deadline;
     this.remainingHours = remainingHours;
     this.completedHours = completedHours;
+    this.initialHours = initialHours;
   }
 
   addHours(hours) {

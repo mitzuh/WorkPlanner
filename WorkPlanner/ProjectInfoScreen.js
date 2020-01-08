@@ -90,7 +90,8 @@ export default class ProjectInfoScreen extends React.Component {
       project.projectName,
       project.deadline,
       newRemainingHours,
-      newCompletedHours
+      newCompletedHours,
+      project.initialHours
     );
 
     const save = this.saveData
@@ -132,8 +133,10 @@ export default class ProjectInfoScreen extends React.Component {
     ]
 
     //TEST
-    percentage = this.state.project.completedHours / this.state.project.remainingHours
-    console.log(percentage)
+    percentage = this.state.project.completedHours / this.state.project.initialHours
+    if (percentage > 1) {
+      percentage = 1.0
+    }
     const progress = {
       data: [percentage]
     };
@@ -192,7 +195,8 @@ const chartConfig = {
   backgroundGradientToOpacity: 0.5,
   color: (opacity = 1) => `rgba(100, 210, 255, ${opacity})`,
   strokeWidth: 1,
-  barPercentage: 0.5
+  barPercentage: 0.5,
+  
 };
 
 const styles = StyleSheet.create({
