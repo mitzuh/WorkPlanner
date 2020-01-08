@@ -42,6 +42,24 @@ export default class NewProjectScreen extends React.Component {
   };
 
   /**
+   * Loads a project from storage. Used for preventing project creation with the same name.
+   * Return true if there is a duplicate project.
+   */
+  loadData = async keyID => {
+    try {
+      const value = await AsyncStorage.getItem(keyID);
+      if (value != null) {
+        return true;
+      }
+      else {
+        return false
+      }
+    } catch (error) {
+      console.log("Error loading data!!!")
+    }
+  };
+
+  /**
    * Makes new project and calls the saveData function by passing the created project to it.
    */
   saveProject() {
@@ -88,8 +106,17 @@ export default class NewProjectScreen extends React.Component {
 
     if (currentStep == 1) {
       if (this.state.nameInput != '') {
-        this.props.navigation.navigate('TextScreen', { text: 'How many hours do you want to work with this project?' })
-        this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+        const load = this.loadData
+        duplicate = load(this.state.nameInput).then(value => {
+          if (!value) {
+            this.props.navigation.navigate('TextScreen', { text: 'How many hours do you want to work with this project?' })
+            this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+          }
+          else {
+            ToastAndroid.show('Project name already in use!', ToastAndroid.SHORT);
+          }
+        })
+      
       }
       else {
         ToastAndroid.show('Please input a name!', ToastAndroid.SHORT);
