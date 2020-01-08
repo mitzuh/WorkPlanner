@@ -1,5 +1,4 @@
 import HomeScreen from './HomeScreen.js'
-import CalendarScreen from './CalendarScreen.js'
 import ProjectsScreen from './ProjectsScreen.js'
 import NewProjectScreen from './NewProjectScreen.js'
 import ProjectInfoScreen from './ProjectInfoScreen.js'
@@ -40,12 +39,6 @@ const MainNavigator = createStackNavigator(
   {
     HomeScreen: {
       screen: HomeScreen,
-      navigationOptions: {
-        header: null,
-      }
-    },
-    MainCalendarScreen: {
-      screen: CalendarScreen,
       navigationOptions: {
         header: null,
       }
