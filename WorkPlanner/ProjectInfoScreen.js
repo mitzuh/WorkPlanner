@@ -74,9 +74,10 @@ export default class ProjectInfoScreen extends React.Component {
    * Adds hours done to the project.
    */
   addHours = () => {
-    ToastAndroid.show(this.state.hours + ' hours marked to project!', ToastAndroid.SHORT);
-
-    this.updateProject();
+    if(this.state.hours != 0) {
+      ToastAndroid.show(this.state.hours + ' hours marked to project!', ToastAndroid.SHORT);
+      this.updateProject();
+    }
     this.setState((prevstate) => ({ hourInput: false, hours: 0 }))
     this.hourInputRef.current.clear();
   }
