@@ -1,29 +1,35 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity } from 'react-native';
-import CustomCalendar from './CustomCalendar';
 
 const date = new Date();
 const formatedDate = date.toISOString().slice(0,10);
 
-export default class CalendarScreen extends React.Component {
+export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {today: formatedDate}
   }
 
-  dateSelected() {
+  navigateToNewProject() {
+    this.props.navigation.navigate('AddProjectScreen')
+    this.props.navigation.navigate('TextScreen', { text: 'Give a name or description for your new project.' })
+  }
+
+  navigateToProjects(){
     this.props.navigation.navigate('ProjectsScreen', {today: this.state.today})
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
-        <CustomCalendar navigation={this.props.navigation} />
         <TouchableOpacity style={styles.projectsButton}
-          onPress={() => this.dateSelected()}>
-          <Text>Projects</Text>
+          onPress={() => this.navigateToNewProject()}>
+          <Text style={styles.text}>New Project</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.projectsButton}
+          onPress={() => this.navigateToProjects()}>
+          <Text style={styles.text}>My Projects</Text>
         </TouchableOpacity>
       </View>
     );
@@ -32,8 +38,8 @@ export default class CalendarScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.8,
-    backgroundColor: '#fff',
+    flex: 1,
+    backgroundColor: '#243E4F',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -43,7 +49,13 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    height: 70,
+    width: 120,
     margin: 5,
+    borderRadius: 10,
+    paddingHorizontal: 5
   },
+  text: {
+    fontSize: 20,
+  }
 });

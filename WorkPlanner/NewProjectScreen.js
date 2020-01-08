@@ -1,24 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncStorage, ToastAndroid } from 'react-native';
 import Project from './Project'
+import CustomCalendar from './CustomCalendar';
 
 export default class NewProjectScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.nameInputRef = React.createRef();
-    this.hourInputRef = React.createRef();
-
-    this.state = { nameInput: '', hourInput: 0 }
+    this.state = { nameInput: '', hourInput: 0, deadline: 11 - 11 - 1111, step: 1 }
 
     this.saveData = this.saveData.bind(this);
+    this.saveProject = this.saveProject.bind(this)
   }
 
   static navigationOptions = ({ navigation }) => {
     date = new Date(navigation.getParam('date'))
-    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth() + 1) + '.' + date.getUTCFullYear();
     return {
-      title: "New Project: " + dateString
+      title: "New Project",
+      headerStyle: {
+        backgroundColor: '#3684ff',
+      },
     };
   };
 
@@ -28,80 +30,184 @@ export default class NewProjectScreen extends React.Component {
     try {
       await AsyncStorage.setItem(projectObject.projectName, newProject);
       ToastAndroid.show('Project "' + projectObject.projectName + '" created!', ToastAndroid.SHORT);
+      this.props.navigation.navigate('HomeScreen')
     } catch (error) {
       console.log("Error saving data!!!")
     }
   };
 
-  saveProject(date) {
-    if (this.state.hourInput > 0 && this.state.nameInput != '') {
-      const save = this.saveData
+  saveProject() {
+    const save = this.saveData
 
-      this.nameInputRef.current.clear();
-      this.hourInputRef.current.clear();
+    const newProject = new Project(
+      this.state.nameInput,
+      this.state.deadline,
+      this.state.hourInput,
+      0,
+    );
 
-      const newProject = new Project(
-        this.state.nameInput,
-        date,
-        this.state.hourInput,
-        0,
-      );
-
-      save(JSON.stringify(newProject));
-    }
-    else {
-      ToastAndroid.show('Data missing or incorrect!', ToastAndroid.SHORT);
-    }
+    save(JSON.stringify(newProject));
   }
 
-  onChangeName(name) {
+  onChangeName = (name) => {
     this.setState((prevstate) => ({ nameInput: name }))
   }
 
-  onChangeHours(hours) {
+  onChangeHours = (hours) => {
     this.setState((prevstate) => ({ hourInput: hours }))
+  }
+
+  setDeadline = (deadline) => {
+    this.setState((prevstate) => ({ deadline: deadline }))
+  }
+
+  getFormatedDateString(deadline) {
+    date = new Date(deadline)
+    dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
+    return dateString;
+  }
+
+  /**
+   * Goes to next step if input is correct.
+   */
+  nextStep = () => {
+    let currentStep = this.state.step;
+
+    if (currentStep == 1) {
+      if (this.state.nameInput != '') {
+        this.props.navigation.navigate('TextScreen', { text: 'How many hours do you want to work with this project?' })
+        this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+      }
+      else {
+        ToastAndroid.show('Please input a name!', ToastAndroid.SHORT);
+      }
+    }
+    else if (currentStep == 2) {
+      if (this.state.hourInput > 0) {
+        this.props.navigation.navigate('TextScreen', { text: 'Finally, select a deadline for your project.' })
+        this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+      }
+      else {
+        ToastAndroid.show('Please input hours!', ToastAndroid.SHORT);
+      }
+    }
+    else if (currentStep == 3) {
+      this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+    }
   }
 
   render() {
     const { navigation } = this.props;
-    const date = navigation.getParam('date');
-    return (
-      <View style={styles.container}>
-        <StatusBar hidden={true} />
-        <Text>Project Name:</Text>
-        <TextInput style={styles.textInput} ref={this.nameInputRef} onChangeText={textInput => this.onChangeName(textInput)} />
 
-        <Text>Hours for the project:</Text>
-        <TextInput keyboardType='numeric' ref={this.hourInputRef} style={styles.textInput} onChangeText={textInput => this.onChangeHours(textInput)} />
-
-        <TouchableOpacity style={styles.addButton} onPress={() => this.saveProject(date)}>
-          <Text>Add Project</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    if (this.state.step == 1) {
+      return <NameInputView onChangeName={this.onChangeName} nextStep={this.nextStep} />
+    }
+    else if (this.state.step == 2) {
+      return <HourInputView onChangeHours={this.onChangeHours} nextStep={this.nextStep} />
+    }
+    else if (this.state.step == 3) {
+      return <DeadlinePickerView navigation={this.props.navigation} nextStep={this.nextStep} setDeadline={this.setDeadline} />
+    }
+    else if (this.state.step == 4) {
+      return <OverviewView name={this.state.nameInput} hours={this.state.hourInput} deadline={this.getFormatedDateString(this.state.deadline)} save={this.saveProject} />
+    }
   }
 }
+
+/**
+ * View constants.
+ */
+const NameInputView = ({ onChangeName, nextStep }) => (
+  <View style={styles.container}>
+    <StatusBar hidden={true} />
+    <Text style={styles.text}>Project Name:</Text>
+    <TextInput style={styles.textInput} placeholder='Name your project' onChangeText={textInput => onChangeName(textInput)} />
+
+    <TouchableOpacity style={styles.button} onPress={() => {
+      nextStep()
+    }}>
+      <Text style={styles.text}>OK</Text>
+    </TouchableOpacity>
+  </View>
+);
+
+const HourInputView = ({ onChangeHours, nextStep }) => (
+  <View style={styles.container}>
+    <StatusBar hidden={true} />
+    <Text style={styles.text}>Hours for the project:</Text>
+    <TextInput keyboardType='numeric' style={styles.textInput} placeholder='Amount of hours' onChangeText={textInput => onChangeHours(textInput)} />
+
+    <TouchableOpacity style={styles.button} onPress={() => {
+      nextStep()
+    }}>
+      <Text style={styles.text}>OK</Text>
+    </TouchableOpacity>
+  </View>
+)
+
+const DeadlinePickerView = ({ navigation, nextStep, setDeadline }) => (
+  <View style={styles.container}>
+    <StatusBar hidden={true} />
+    <CustomCalendar navigation={navigation} nextStep={() => { nextStep() }} setDeadline={dedis => setDeadline(dedis)} />
+  </View>
+)
+
+const OverviewView = ({ name, hours, deadline, save }) => (
+  <View style={styles.container}>
+    <StatusBar hidden={true} />
+    <Text style={styles.text}>Project Name: {name}</Text>
+
+    <Text style={styles.text}>Deadline: {deadline}</Text>
+
+    <Text style={styles.text}>Hours: {hours}</Text>
+
+    <TouchableOpacity style={styles.addButton} onPress={() => save()}>
+      <Text style={styles.text}>Add Project</Text>
+    </TouchableOpacity>
+  </View>
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#243E4F',
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
   },
-  addButton: {
-    backgroundColor: '#FAF5F4',
+  button: {
+    backgroundColor: '#3684ff',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    height: 50,
+    width: 50,
     margin: 10,
+    borderRadius: 10,
+  },
+  addButton: {
+    backgroundColor: '#3684ff',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: 90,
+    margin: 10,
+    padding: 5,
+    borderRadius: 10,
   },
   textInput: {
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1
+    borderColor: '#000000',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingHorizontal: 5
   },
+  text: {
+    color: 'white',
+    fontWeight: 'bold'
+  }
 });

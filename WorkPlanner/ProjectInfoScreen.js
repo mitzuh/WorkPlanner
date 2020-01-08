@@ -25,7 +25,7 @@ export default class ProjectInfoScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     project = navigation.getParam('project')
     today = navigation.getParam('today')
-    var color = '#fff'
+    var color = '#3684ff'
 
     if (project.remainingHours == 0) {
       color = '#00FF00';
@@ -37,7 +37,7 @@ export default class ProjectInfoScreen extends React.Component {
     return {
       title: navigation.getParam('project').projectName,
       headerStyle: {
-        backgroundColor: color,
+        backgroundColor: navigation.getParam('BackgroundColor', color),
       },
     };
   };
@@ -73,8 +73,11 @@ export default class ProjectInfoScreen extends React.Component {
     this.setState((prevstate) => ({ hours: hours }))
   }
 
+  /**
+   * Update project hour and change screen header color if completed enough hours.
+   */
   updateProject() {
-    const project = this.props.navigation.getParam('project')
+    const project = this.state.project
 
     newCompletedHours = Number(project.completedHours) + Number(this.state.hours);
     newRemainingHours = project.remainingHours - this.state.hours;
@@ -92,6 +95,13 @@ export default class ProjectInfoScreen extends React.Component {
     const save = this.saveData
     save(JSON.stringify(updatedProject));
     this.setState((prevstate) => ({ project: updatedProject }))
+
+    if (updatedProject.remainingHours == 0) {
+      this.props.navigation.setParams({'BackgroundColor':'#00FF00'});
+    }
+    else if (updatedProject.deadline < today) {
+      this.props.navigation.setParams({'BackgroundColor':'#FF0000'});
+    }
   }
 
   getFormatedDateString(deadline) {
@@ -162,31 +172,39 @@ function Item({ title }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#243E4F',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     padding: 20,
   },
   bottomView: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#243E4F',
     padding: 20,
   },
   header: {
     fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  title: {
+    color: 'white'
   },
   hourButton: {
-    backgroundColor: '#FAF5F4',
+    backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
     margin: 5,
+    borderRadius: 10,
+    paddingHorizontal: 5
   },
   textInput: {
     height: 40,
     borderColor: 'gray',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1
   },
 });
