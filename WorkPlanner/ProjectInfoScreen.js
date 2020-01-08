@@ -37,7 +37,7 @@ export default class ProjectInfoScreen extends React.Component {
     return {
       title: navigation.getParam('project').projectName,
       headerStyle: {
-        backgroundColor: color,
+        backgroundColor: navigation.getParam('BackgroundColor', color),
       },
     };
   };
@@ -73,8 +73,11 @@ export default class ProjectInfoScreen extends React.Component {
     this.setState((prevstate) => ({ hours: hours }))
   }
 
+  /**
+   * Update project hour and change screen header color if completed enough hours.
+   */
   updateProject() {
-    const project = this.props.navigation.getParam('project')
+    const project = this.state.project
 
     newCompletedHours = Number(project.completedHours) + Number(this.state.hours);
     newRemainingHours = project.remainingHours - this.state.hours;
@@ -92,6 +95,13 @@ export default class ProjectInfoScreen extends React.Component {
     const save = this.saveData
     save(JSON.stringify(updatedProject));
     this.setState((prevstate) => ({ project: updatedProject }))
+
+    if (updatedProject.remainingHours == 0) {
+      this.props.navigation.setParams({'BackgroundColor':'#00FF00'});
+    }
+    else if (updatedProject.deadline < today) {
+      this.props.navigation.setParams({'BackgroundColor':'#FF0000'});
+    }
   }
 
   getFormatedDateString(deadline) {
