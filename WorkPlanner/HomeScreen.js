@@ -4,6 +4,10 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity } from 'react-nativ
 const date = new Date();
 const formatedDate = date.toISOString().slice(0,10);
 
+/**
+ * Class for home screen, where user can navigate to project creation or
+ * projects screen.
+ */
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -11,11 +15,17 @@ export default class HomeScreen extends React.Component {
     this.state = {today: formatedDate}
   }
 
+  /**
+   * Navigates to project creation screen.
+   */
   navigateToNewProject() {
     this.props.navigation.navigate('AddProjectScreen')
     this.props.navigation.navigate('TextScreen', { text: 'Give a name or description for your new project.' })
   }
 
+  /**
+   * Navigate to project list screen.
+   */
   navigateToProjects(){
     this.props.navigation.navigate('ProjectsScreen', {today: this.state.today})
   }

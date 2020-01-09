@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity, TextInput, AsyncSt
 import Project from './Project'
 import CustomCalendar from './CustomCalendar';
 
+/**
+ * Class for project creation.
+ */
 export default class NewProjectScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +27,9 @@ export default class NewProjectScreen extends React.Component {
     };
   };
 
-  // Storage
+  /**
+   * Saved new project to async storage with project name as key.
+   */
   saveData = async newProject => {
     projectObject = JSON.parse(newProject);
     try {
@@ -36,6 +41,27 @@ export default class NewProjectScreen extends React.Component {
     }
   };
 
+  /**
+   * Loads a project from storage. Used for preventing project creation with the same name.
+   * Return true if there is a duplicate project.
+   */
+  loadData = async keyID => {
+    try {
+      const value = await AsyncStorage.getItem(keyID);
+      if (value != null) {
+        return true;
+      }
+      else {
+        return false
+      }
+    } catch (error) {
+      console.log("Error loading data!!!")
+    }
+  };
+
+  /**
+   * Makes new project and calls the saveData function by passing the created project to it.
+   */
   saveProject() {
     const save = this.saveData
 
@@ -44,6 +70,7 @@ export default class NewProjectScreen extends React.Component {
       this.state.deadline,
       this.state.hourInput,
       0,
+      this.state.hourInput
     );
 
     save(JSON.stringify(newProject));
@@ -61,6 +88,10 @@ export default class NewProjectScreen extends React.Component {
     this.setState((prevstate) => ({ deadline: deadline }))
   }
 
+  /**
+   * Formats the date to dd-mm-yyy
+   * @param {*} deadline deadline for the project.
+   */
   getFormatedDateString(deadline) {
     date = new Date(deadline)
     dateString = date.getUTCDate() + '.' + (date.getUTCMonth()+1) + '.' + date.getUTCFullYear();
@@ -75,8 +106,17 @@ export default class NewProjectScreen extends React.Component {
 
     if (currentStep == 1) {
       if (this.state.nameInput != '') {
-        this.props.navigation.navigate('TextScreen', { text: 'How many hours do you want to work with this project?' })
-        this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+        const load = this.loadData
+        duplicate = load(this.state.nameInput).then(value => {
+          if (!value) {
+            this.props.navigation.navigate('TextScreen', { text: 'How many hours do you want to work with this project?' })
+            this.setState((prevstate) => ({ step: prevstate.step + 1 }))
+          }
+          else {
+            ToastAndroid.show('Project name already in use!', ToastAndroid.SHORT);
+          }
+        })
+      
       }
       else {
         ToastAndroid.show('Please input a name!', ToastAndroid.SHORT);
@@ -114,9 +154,6 @@ export default class NewProjectScreen extends React.Component {
   }
 }
 
-/**
- * View constants.
- */
 const NameInputView = ({ onChangeName, nextStep }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />
@@ -155,11 +192,11 @@ const DeadlinePickerView = ({ navigation, nextStep, setDeadline }) => (
 const OverviewView = ({ name, hours, deadline, save }) => (
   <View style={styles.container}>
     <StatusBar hidden={true} />
-    <Text style={styles.text}>Project Name: {name}</Text>
+    <Text style={styles.overviewText}>Project Name: {name}</Text>
 
-    <Text style={styles.text}>Deadline: {deadline}</Text>
+    <Text style={styles.overviewText}>Deadline: {deadline}</Text>
 
-    <Text style={styles.text}>Hours: {hours}</Text>
+    <Text style={styles.overviewText}>Hours: {hours}</Text>
 
     <TouchableOpacity style={styles.addButton} onPress={() => save()}>
       <Text style={styles.text}>Add Project</Text>
@@ -209,5 +246,9 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontWeight: 'bold'
+  },
+  overviewText: {
+    color: 'white',
+    fontSize: 24
   }
 });
